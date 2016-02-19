@@ -19,10 +19,14 @@ class ReviewsController < ApplicationController
     #   user_id: current_user.id
     # )
 
-    if @review.save
-      redirect_to products_path, notice: 'Review created successfully'
-    else
-      render 'products/show'
+    respond_to do |format|
+      if @review.save
+        format.html {redirect_to products_path(@product.id), notice: 'Review added.'}
+        format.js {}
+      else
+        format.html {render 'products/show', alert: 'There was an error.'}
+        format.js {}
+      end
     end
   end
 
